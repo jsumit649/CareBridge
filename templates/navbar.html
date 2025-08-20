@@ -1,0 +1,34 @@
+{% load static %}
+
+<header class="navbar-header">
+    <div class="navbar-container">
+        <a href="{% url 'home' %}" class="navbar-logo">
+            <img src="{% static 'images/logo.png' %}" height="40" alt="CareBridge" class="navbar-logo-img">
+        </a>
+        <!-- <button class="navbar-burger" id="navbar-burger" aria-label="Toggle navigation" aria-expanded="false">
+            <span class="burger-bar"></span>
+            <span class="burger-bar"></span>
+            <span class="burger-bar"></span>
+        </button> -->
+        <nav class="navbar-menu">
+            <div class="navbar-links">
+                <a href="{% url 'home' %}" class="navbar-link">Home</a>
+            <div class="navbar-user-section">
+                {% if request.user.is_authenticated %}
+                <div class="navbar-auth-buttons">
+                    <a href="" class="navbar-link">{{request.user.username}}</a>
+                    <a href="" class="navbar-link" title="Logout">Logout</a>
+                </div>
+                {% else %}
+                <div class="navbar-auth-buttons">
+                    <a href="" class="navbar-login-btn">
+                        <span class="navbar-login-text">Login</span>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+</header>
+
+
