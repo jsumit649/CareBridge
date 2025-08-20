@@ -2,6 +2,7 @@ import uuid
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db.models import Q
 
 
 class UserManager(BaseUserManager):
@@ -175,7 +176,12 @@ class PatientDoctorMapping(TimestampedModel):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['patient', 'doctor'], name='unique_patient_doctor')
+            # enforced uniqueness only for active mappings so old inactive mappings don't block reassignments
+            models.UniqueConstraint(
+                fields=['patient', 'doctor'],
+                condition=Q(is_active=True),
+                name='unique_active_patient_doctor'
+            )
         ]
         indexes = [
             models.Index(fields=['patient']),

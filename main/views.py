@@ -1,7 +1,17 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.contrib.auth import get_user_model
+from rest_framework import viewsets, generics, permissions
+from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-# Create your views here.
+
+from .models import Patient, Doctor, PatientDoctorMapping
+from .serializers import (
+UserSerializer,
+PatientSerializer,
+DoctorSerializer,
+PatientDoctorMappingSerializer,
+)
+from django.views.generic import TemplateView
 
 
 class HomeView(TemplateView):
