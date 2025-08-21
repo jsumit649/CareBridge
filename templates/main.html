@@ -12,6 +12,7 @@
     <div class="main-navbar-container">
         {% include 'navbar.html' %}
     </div>
+    
     <div class="toast-container" id="toast-container" role="region" aria-live="polite" aria-atomic="true">
         {% if messages %}
             {% for message in messages %}
@@ -22,13 +23,21 @@
             {% endfor %}
         {% endif %}
     </div>
+    
     <div class="main-content-container">
         {% block content %}
-        {% endblock %}
+        {% endblock content %}
     </div>
+    
     <footer class="main-footer">
-        <p class="main-footer-text">&copy; 2025 CareBridge. All rights reserved.</p>
+        <div class="main-footer-content">
+            <a href="{% url 'home' %}" class="footer-brand">
+                <img src="{% static 'images/logo.png' %}" alt="CareBridge" class="footer-logo">
+            </a>
+            <p class="footer-copyright">© 2025 CareBridge. All rights reserved.</p>
+        </div>
     </footer>
+    
     <script src="{% static 'js/scripts.js' %}"></script>
 </body>
 </html>
