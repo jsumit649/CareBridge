@@ -74,6 +74,16 @@ class PatientDoctorMappingSerializer(serializers.ModelSerializer):
     doctor = serializers.PrimaryKeyRelatedField(queryset=Doctor.objects.all())
     assigned_by = serializers.ReadOnlyField(source="assigned_by.id")
 
+    def __init__(self, *args, **kwargs):
+        # ensure patient choices are limited to the request user's patients
+        super().__init__(*args, **kwargs)
+        request = self.context.get("request", None)
+        if request and getattr(request, "user", None) and not request.user.is_anonymous:
+            self.fields["patient"].queryset = Patient.objects.filter(created_by=request.user, is_active=True)
+        else:
+            # anonymous users (or missing request) get no patient options
+            self.fields["patient"].queryset = Patient.objects.none()
+
     class Meta:
         model = PatientDoctorMapping
         fields = [
