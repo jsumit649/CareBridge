@@ -10,6 +10,15 @@ urlpatterns = [
     path('register/', views.RegisterTemplateView.as_view(), name='register'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
 
+    # Patient and Doctor template pages
+    path('patients/', views.PatientsView.as_view(), name='patients'),
+    path('patient-details/<uuid:id>/', views.PatientDetailsView.as_view(), name='patient-details'),
+    path('doctors/', views.DoctorsView.as_view(), name='doctors'),
+    path('doctor-details/<uuid:id>/', views.DoctorDetailsView.as_view(), name='doctor-details'),
+
+    # Add mapping page
+    path('mappings/', views.MappingsView.as_view(), name='mappings'),
+
     # Authentication API endpoints
     path('api/register/', views.RegisterView.as_view(), name='api-register'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

@@ -2,30 +2,27 @@
 
 <header class="navbar-header">
     <div class="navbar-container">
-        <a href="{% url 'home' %}" class="navbar-logo">
-            <img src="{% static 'images/logo.png' %}" height="40" alt="CareBridge" class="navbar-logo-img">
+        <a href="{% url 'home' %}" class="navbar-brand">
+            <img src="{% static 'images/logo.png' %}" alt="CareBridge" class="navbar-logo">
         </a>
-        <!-- <button class="navbar-burger" id="navbar-burger" aria-label="Toggle navigation" aria-expanded="false">
-            <span class="burger-bar"></span>
-            <span class="burger-bar"></span>
-            <span class="burger-bar"></span>
-        </button> -->
-        <nav class="navbar-menu">
+        <nav class="navbar-nav">
             <div class="navbar-links">
                 <a href="{% url 'home' %}" class="navbar-link">Home</a>
-            <div class="navbar-user-section">
-                {% if request.user.is_authenticated %}
-                <div class="navbar-auth-buttons">
-                    <a href="" class="navbar-link">{{request.user.username}}</a>
-                    <a href="{% url 'logout' %}" class="navbar-link" title="Logout">Logout</a>
+                <div id="authenticated-links" class="navbar-auth-links hidden">
+                    <a href="{% url 'patients' %}" class="navbar-link">Patients</a>
+                    <a href="{% url 'doctors' %}" class="navbar-link">Doctors</a>
+                    <a href="{% url 'mappings' %}" class="navbar-link">Mappings</a>
                 </div>
-                {% else %}
-                <div class="navbar-auth-buttons">
-                    <a href="{% url 'login' %}" class="navbar-login-btn">
-                        <span class="navbar-login-text">Login</span>
-                    </a>
+            </div>
+            <div class="navbar-user">
+                <div id="authenticated-section" class="navbar-user-auth hidden">
+                    <span class="navbar-username" id="username-display">User</span>
+                    <button onclick="logout()" class="navbar-logout">Logout</button>
                 </div>
-                {% endif %}
+                <div id="unauthenticated-section" class="navbar-user-unauth">
+                    <a href="{% url 'login' %}" class="navbar-login">Login</a>
+                    <a href="{% url 'register' %}" class="navbar-register">Register</a>
+                </div>
             </div>
         </nav>
     </div>

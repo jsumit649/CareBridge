@@ -1,0 +1,194 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Patient Details</h1>
+        <div class="header-actions">
+            <button id="editPatientBtn" class="btn btn-primary">
+                Edit Patient
+            </button>
+            <a href="/patients/" class="btn btn-secondary">
+                Back to Patients
+            </a>
+        </div>
+    </div>
+
+    <!-- Patient Details View -->
+    <div id="patientDetailsView" class="details-card">
+        <!-- Patient details will be loaded here -->
+    </div>
+
+    <!-- Edit Patient Form (Initially Hidden) -->
+    <div id="editPatientForm" class="form-card hidden">
+        <h2 class="form-title">Edit Patient</h2>
+        <form id="patientEditForm" class="form-grid">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input type="text" name="first_name" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input type="text" name="last_name" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Date of Birth</label>
+                <input type="date" name="dob" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Gender</label>
+                <select name="gender" required class="form-select">
+                    <option value="">Select Gender</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="O">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="tel" name="phone" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-input">
+            </div>
+            <div class="form-group form-group-full">
+                <label class="form-label">Address</label>
+                <textarea name="address" rows="2" class="form-textarea"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Blood Group</label>
+                <select name="blood_group" class="form-select">
+                    <option value="">Select Blood Group</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Emergency Contact</label>
+                <input type="tel" name="emergency_contact" class="form-input">
+            </div>
+            <div class="form-group form-group-full">
+                <label class="form-label">Allergies</label>
+                <textarea name="allergies" rows="2" class="form-textarea"></textarea>
+            </div>
+            <div class="form-group form-group-full">
+                <label class="form-label">Medical History</label>
+                <textarea name="medical_history" rows="3" class="form-textarea"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">
+                    Update Patient
+                </button>
+                <button type="button" id="cancelEditPatient" class="btn btn-secondary">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Display patient details in the page
+function displayPatientDetails(patient) {
+    const container = document.getElementById('patientDetailsView');
+    if (!container) return;
+    
+    container.innerHTML = `
+        <div class="details-grid">
+            <div class="details-section">
+                <h3 class="details-section-title">Personal Information</h3>
+                <div class="details-list">
+                    <div class="details-item">
+                        <span class="details-label">Name:</span>
+                        <span class="details-value">${patient.first_name} ${patient.last_name}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Date of Birth:</span>
+                        <span class="details-value">${patient.dob}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Gender:</span>
+                        <span class="details-value">${getGenderDisplay(patient.gender)}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Phone:</span>
+                        <span class="details-value">${patient.phone}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Email:</span>
+                        <span class="details-value">${patient.email || 'N/A'}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Blood Group:</span>
+                        <span class="details-value">${patient.blood_group || 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="details-section">
+                <h3 class="details-section-title">Contact & Emergency</h3>
+                <div class="details-list">
+                    <div class="details-item">
+                        <span class="details-label">Address:</span>
+                        <span class="details-value">${patient.address || 'N/A'}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Emergency Contact:</span>
+                        <span class="details-value">${patient.emergency_contact || 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="details-section">
+                <h3 class="details-section-title">Medical Information</h3>
+                <div class="details-list">
+                    <div class="details-item">
+                        <span class="details-label">Allergies:</span>
+                        <span class="details-value">${patient.allergies || 'None'}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Medical History:</span>
+                        <span class="details-value">${patient.medical_history || 'None'}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="details-section">
+                <h3 class="details-section-title">System Information</h3>
+                <div class="details-list">
+                    <div class="details-item">
+                        <span class="details-label">Created:</span>
+                        <span class="details-value">${new Date(patient.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Last Updated:</span>
+                        <span class="details-value">${new Date(patient.updated_at).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Populate edit form with patient data
+function populateEditForm(patient) {
+    const form = document.getElementById('patientEditForm');
+    if (!form) return;
+    
+    const inputs = form.querySelectorAll('input, select, textarea');
+    
+    inputs.forEach(input => {
+        const name = input.name;
+        if (patient[name] !== undefined) {
+            input.value = patient[name] || '';
+        }
+    });
+}
+</script>
+{% endblock content %}

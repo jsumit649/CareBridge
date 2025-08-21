@@ -22,6 +22,22 @@ class HomeView(TemplateView):
     template_name = 'main/home.html'
 
 
+class PatientsView(TemplateView):
+    template_name = 'main/patients.html'
+
+
+class PatientDetailsView(TemplateView):
+    template_name = 'main/patient_details.html'
+
+
+class DoctorsView(TemplateView):
+    template_name = 'main/doctors.html'
+
+
+class DoctorDetailsView(TemplateView):
+    template_name = 'main/doctor_details.html'
+
+
 class PatientViewSet(viewsets.ModelViewSet):
     serializer_class = PatientSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -146,3 +162,6 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('login')
+
+class MappingsView(TemplateView):
+    template_name = 'main/mapping.html'

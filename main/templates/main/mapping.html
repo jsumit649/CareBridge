@@ -1,0 +1,102 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Patient-Doctor Mappings</h1>
+        <button id="createMappingBtn" class="btn btn-primary">
+            Assign Doctor to Patient
+        </button>
+    </div>
+
+    <!-- Create Mapping Form (Initially Hidden) -->
+    <div id="createMappingForm" class="form-card hidden">
+        <h2 class="form-title">Assign Doctor to Patient</h2>
+        <form id="mappingForm" class="form-grid">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label">Select Patient</label>
+                <select name="patient" id="patientSelect" required class="form-select">
+                    <option value="">Loading patients...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Select Doctor</label>
+                <select name="doctor" id="doctorSelect" required class="form-select">
+                    <option value="">Loading doctors...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Relationship Type</label>
+                <select name="relationship_type" class="form-select">
+                    <option value="">Select Type</option>
+                    <option value="Primary Care">Primary Care</option>
+                    <option value="Specialist">Specialist</option>
+                    <option value="Consultant">Consultant</option>
+                    <option value="Emergency">Emergency</option>
+                    <option value="Referral">Referral</option>
+                </select>
+            </div>
+            <div class="form-group form-group-full">
+                <label class="form-label">Notes</label>
+                <textarea name="notes" rows="3" placeholder="Additional notes about this assignment..." class="form-textarea"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">
+                    Assign Doctor
+                </button>
+                <button type="button" id="cancelMappingForm" class="btn btn-secondary">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-card">
+        <h3 class="filter-title">Filter Mappings</h3>
+        <div class="filter-grid">
+            <div class="form-group">
+                <label class="form-label">Filter by Patient</label>
+                <select id="filterPatient" class="form-select">
+                    <option value="">All Patients</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Filter by Doctor</label>
+                <select id="filterDoctor" class="form-select">
+                    <option value="">All Doctors</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Filter by Relationship</label>
+                <select id="filterRelationship" class="form-select">
+                    <option value="">All Types</option>
+                    <option value="Primary Care">Primary Care</option>
+                    <option value="Specialist">Specialist</option>
+                    <option value="Consultant">Consultant</option>
+                    <option value="Emergency">Emergency</option>
+                    <option value="Referral">Referral</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mappings List -->
+    <div class="content-card">
+        <div class="content-header">
+            <h2 class="content-title">Current Assignments</h2>
+            <div class="content-actions">
+                <button onclick="loadMappings()" class="btn btn-secondary btn-small">
+                    Refresh
+                </button>
+                <span id="mappingsCount" class="count-text"></span>
+            </div>
+        </div>
+        <div id="mappingsList" class="mappings-list">
+            <p class="loading-text">Loading mappings...</p>
+        </div>
+    </div>
+</div>
+{% endblock content %}

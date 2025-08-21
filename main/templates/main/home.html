@@ -3,7 +3,43 @@
 
 {% block content %}
 <div class="home-container">
-    <h2>Welcome to CareBridge</h2>
-    <p>Your one-stop solution for all your care needs.</p>
-
+    <div class="hero-section">
+        <h1 class="hero-title">Welcome to CareBridge</h1>
+        <p class="hero-subtitle">Your comprehensive healthcare management platform</p>
+        <p class="hero-description">Connecting patients and healthcare providers through seamless digital solutions.</p>
+        
+        <div class="hero-actions">
+            <div id="hero-authenticated" class="hero-buttons-auth" style="display: none;">
+                <a href="/patients/" class="btn btn-primary">Manage Patients</a>
+                <a href="/doctors/" class="btn btn-secondary">View Doctors</a>
+                <a href="/mappings/" class="btn btn-accent">Patient Mappings</a>
+            </div>
+            <div id="hero-unauthenticated" class="hero-buttons-unauth">
+                <a href="/login/" class="btn btn-primary">Login</a>
+                <a href="/register/" class="btn btn-secondary">Get Started</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="features-section">
+        <h2 class="features-title">Key Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3 class="feature-title">Patient Management</h3>
+                <p class="feature-description">Comprehensive patient records and information management</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👨‍⚕️</div>
+                <h3 class="feature-title">Doctor Directory</h3>
+                <p class="feature-description">Maintain detailed doctor profiles and specializations</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔗</div>
+                <h3 class="feature-title">Care Coordination</h3>
+                <p class="feature-description">Connect patients with their healthcare providers</p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}

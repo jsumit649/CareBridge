@@ -1,0 +1,162 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Doctor Details</h1>
+        <div class="header-actions">
+            <button id="editDoctorBtn" class="btn btn-primary">
+                Edit Doctor
+            </button>
+            <a href="/doctors/" class="btn btn-secondary">
+                Back to Doctors
+            </a>
+        </div>
+    </div>
+
+    <!-- Doctor Details View -->
+    <div id="doctorDetailsView" class="details-card">
+        <!-- Doctor details will be loaded here -->
+    </div>
+
+    <!-- Edit Doctor Form (Initially Hidden) -->
+    <div id="editDoctorForm" class="form-card hidden">
+        <h2 class="form-title">Edit Doctor</h2>
+        <form id="doctorEditForm" class="form-grid">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="full_name" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Specialization</label>
+                <input type="text" name="specialization" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">License Number</label>
+                <input type="text" name="license_number" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Years of Experience</label>
+                <input type="number" name="years_experience" min="0" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="tel" name="phone" required class="form-input">
+            </div>
+            <div class="form-group form-group-full">
+                <label class="form-label">Qualifications</label>
+                <textarea name="qualifications" rows="2" class="form-textarea"></textarea>
+            </div>
+            <div class="form-group form-group-full">
+                <label class="form-label">Hospital Affiliation</label>
+                <input type="text" name="hospital_affiliation" class="form-input">
+            </div>
+            <div class="form-group form-group-full">
+                <label class="form-label">Availability</label>
+                <textarea name="availability" rows="2" class="form-textarea"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">
+                    Update Doctor
+                </button>
+                <button type="button" id="cancelEditDoctor" class="btn btn-secondary">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Display doctor details in the page
+function displayDoctorDetails(doctor) {
+    const container = document.getElementById('doctorDetailsView');
+    if (!container) return;
+    
+    container.innerHTML = `
+        <div class="details-grid">
+            <div class="details-section">
+                <h3 class="details-section-title">Personal Information</h3>
+                <div class="details-list">
+                    <div class="details-item">
+                        <span class="details-label">Name:</span>
+                        <span class="details-value">Dr. ${doctor.full_name}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Email:</span>
+                        <span class="details-value">${doctor.email}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Phone:</span>
+                        <span class="details-value">${doctor.phone}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="details-section">
+                <h3 class="details-section-title">Professional Information</h3>
+                <div class="details-list">
+                    <div class="details-item">
+                        <span class="details-label">Specialization:</span>
+                        <span class="details-value">${doctor.specialization}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">License Number:</span>
+                        <span class="details-value">${doctor.license_number}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Experience:</span>
+                        <span class="details-value">${doctor.years_experience} years</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Qualifications:</span>
+                        <span class="details-value">${doctor.qualifications || 'N/A'}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Hospital Affiliation:</span>
+                        <span class="details-value">${doctor.hospital_affiliation || 'N/A'}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Availability:</span>
+                        <span class="details-value">${doctor.availability || 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="details-section">
+                <h3 class="details-section-title">System Information</h3>
+                <div class="details-list">
+                    <div class="details-item">
+                        <span class="details-label">Created:</span>
+                        <span class="details-value">${new Date(doctor.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <div class="details-item">
+                        <span class="details-label">Last Updated:</span>
+                        <span class="details-value">${new Date(doctor.updated_at).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Populate edit form with doctor data
+function populateEditForm(doctor) {
+    const form = document.getElementById('doctorEditForm');
+    if (!form) return;
+    
+    const inputs = form.querySelectorAll('input, select, textarea');
+    
+    inputs.forEach(input => {
+        const name = input.name;
+        if (doctor[name] !== undefined) {
+            input.value = doctor[name] || '';
+        }
+    });
+}
+</script>
+{% endblock content %}
