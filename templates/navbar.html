@@ -17,11 +17,11 @@
                 {% if request.user.is_authenticated %}
                 <div class="navbar-auth-buttons">
                     <a href="" class="navbar-link">{{request.user.username}}</a>
-                    <a href="" class="navbar-link" title="Logout">Logout</a>
+                    <a href="{% url 'logout' %}" class="navbar-link" title="Logout">Logout</a>
                 </div>
                 {% else %}
                 <div class="navbar-auth-buttons">
-                    <a href="" class="navbar-login-btn">
+                    <a href="{% url 'login' %}" class="navbar-login-btn">
                         <span class="navbar-login-text">Login</span>
                     </a>
                 </div>
