@@ -6,7 +6,6 @@
     {% if page == 'login' %}
     <div class="login-container">
         <form id="jwt-login-form" class="login-form">
-            {% csrf_token %}
             <label for="login-username" class="login-label">Username</label>
             <input type="text" id="login-username" class="login-input" placeholder="Enter Username"/>
             <label for="login-password" class="login-label">Password</label>
